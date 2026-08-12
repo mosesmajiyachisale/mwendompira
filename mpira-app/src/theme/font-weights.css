@@ -1,0 +1,46 @@
+/* font-weights.css */
+
+/* Thin */
+.font-thin {
+  font-weight: 100 !important;
+}
+
+/* Extra Light */
+.font-extralight {
+  font-weight: 200 !important;
+}
+
+/* Light */
+.font-light {
+  font-weight: 300 !important;
+}
+
+/* Normal */
+.font-normal {
+  font-weight: 400 !important;
+}
+
+/* Medium */
+.font-medium {
+  font-weight: 500 !important;
+}
+
+/* Semi Bold */
+.font-semibold {
+  font-weight: 600 !important;
+}
+
+/* Bold */
+.font-bold {
+  font-weight: 700 !important;
+}
+
+/* Extra Bold */
+.font-extrabold {
+  font-weight: 800 !important;
+}
+
+/* Black */
+.font-black {
+  font-weight: 900 !important;
+}

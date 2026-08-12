@@ -1,0 +1,55 @@
+:root {
+  /* Base Dark */
+  --ion-color-dark: #222831;
+  --ion-color-dark-rgb: 34, 40, 49;
+
+  /* Lighter shades */
+  --ion-color-light-dark: #313844;
+  --ion-color-light-dark-rgb: 49, 56, 68;
+
+  --ion-color-lighter-dark: #404857;
+  --ion-color-lighter-dark-rgb: 64, 72, 87;
+
+  --ion-color-lightest-dark: #515b6c;
+  --ion-color-lightest-dark-rgb: 81, 91, 108;
+
+  /* Darker shades */
+  --ion-color-darker: #151922;
+  --ion-color-darker-rgb: 21, 25, 34;
+
+  --ion-color-darkest: #0b0d12;
+  --ion-color-darkest-rgb: 11, 13, 18;
+}
+
+/* Base */
+.ion-color-dark {
+  --ion-color-base: var(--ion-color-dark);
+  --ion-color-base-rgb: var(--ion-color-dark-rgb);
+}
+
+/* Lighter */
+.ion-color-light-dark {
+  --ion-color-base: var(--ion-color-light-dark);
+  --ion-color-base-rgb: var(--ion-color-light-dark-rgb);
+}
+
+.ion-color-lighter-dark {
+  --ion-color-base: var(--ion-color-lighter-dark);
+  --ion-color-base-rgb: var(--ion-color-lighter-dark-rgb);
+}
+
+.ion-color-lightest-dark {
+  --ion-color-base: var(--ion-color-lightest-dark);
+  --ion-color-base-rgb: var(--ion-color-lightest-dark-rgb);
+}
+
+/* Darker */
+.ion-color-darker {
+  --ion-color-base: var(--ion-color-darker);
+  --ion-color-base-rgb: var(--ion-color-darker-rgb);
+}
+
+.ion-color-darkest {
+  --ion-color-base: var(--ion-color-darkest);
+  --ion-color-base-rgb: var(--ion-color-darkest-rgb);
+}

@@ -1,0 +1,7 @@
+{
+  "name": "mpira-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite"
+}
