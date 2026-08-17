@@ -16,13 +16,13 @@ class CodeSeeder extends Seeder
     {
         $seasons=Season::orderBy('id','asc')->get();
 
-        $NUMBER_OF_COACH_CODES = 1;
-        $NUMBER_OF_PLAYER_CODES = 2;
+        $NUMBER_OF_PROVIDER_CODES = 5;
+        $NUMBER_OF_PLAYER_CODES = 15;
 
 
-        $TOTAL_NUMBER_OF_CODES = $NUMBER_OF_COACH_CODES + $NUMBER_OF_PLAYER_CODES;
+        $TOTAL_NUMBER_OF_CODES = $NUMBER_OF_PROVIDER_CODES + $NUMBER_OF_PLAYER_CODES;
         
-        $coachCodeTypeId = CodeType::where('code_type_name','Coach')->value('id');
+        $providerCodeTypeId = CodeType::where('code_type_name','Provider')->value('id');
         $playerCodeTypeId = CodeType::where('code_type_name','Player')->value('id');
         
         $total=$TOTAL_NUMBER_OF_CODES*count($seasons);
@@ -35,8 +35,8 @@ class CodeSeeder extends Seeder
             for( $index=1; $index<=$TOTAL_NUMBER_OF_CODES; $index++)
             {
 
-                if($index<=$NUMBER_OF_COACH_CODES){
-                    $codeTypeId=$coachCodeTypeId;
+                if($index<=$NUMBER_OF_PROVIDER_CODES){
+                    $codeTypeId=$providerCodeTypeId;
                 }
                 else{
                     $codeTypeId=$playerCodeTypeId;
@@ -44,7 +44,7 @@ class CodeSeeder extends Seeder
 
                 $prefix="{$seasonId}";
                 $postFix=$this->formatPostFix($index,$TOTAL_NUMBER_OF_CODES);
-                $code="{$prefix}{$postFix}";
+                $code="{$prefix}{$codeTypeId}{$postFix}";
 
                 DB::table('codes')->updateOrInsert(
                     [

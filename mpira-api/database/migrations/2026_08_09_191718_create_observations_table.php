@@ -18,9 +18,10 @@ return new class extends Migration
             $table->foreignId('team_id')->nullable()->constrained('teams')->nullOnDelete();
             $table->foreignId('player_id')->nullable()->constrained('players')->nullOnDelete();
             $table->foreignId('secondary_player_id')->nullable()->constrained('players')->nullOnDelete();
-            $table->unsignedSmallInteger('minute')->nullable();
-            $table->unsignedSmallInteger('second')->nullable();
-            $table->text('observation_note')->nullable();
+            $table->unsignedSmallInteger('minutes')->nullable();
+            $table->unsignedSmallInteger('extra_minutes')->default(0);
+            $table->text('observation_desc')->nullable();
+            $table->foreignId('commentator_id')->constrained('providers')->cascadeOnDelete();
         });
     }
 

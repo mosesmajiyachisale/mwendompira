@@ -36,7 +36,7 @@ class TournamentSeeder extends Seeder
                 'tournament_type_id' => 3,
             ],
             [
-                'tournament_name' => 'Friendly Game',
+                'tournament_name' => 'Friendly Match',
                 'tournament_type_id' => 5,
             ],
             [

@@ -300,9 +300,7 @@ const page=ref(
 )
 
 
-const perPage=ref(
-  Number(route.query.perPage || 10)
-)
+const perPage=ref(Number(route.query.perPage || 20))
 
 
 const sortColumn=ref<SortColumn>('season')

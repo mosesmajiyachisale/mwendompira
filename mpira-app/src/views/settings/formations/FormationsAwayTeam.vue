@@ -1,184 +1,115 @@
-```vue
 <template>
 
   <div
-    class="formation-wrapper mb-0"
+    class="formation-body"
     :style="{
       '--size-x': sizeX,
       '--size-y': sizeY
     }"
   >
 
-    <div class="formation-body">
+    <!-- =================================================
+         PITCH MARKINGS
+         ================================================= -->
+
+    <div class="pitch-markings">
+
+      <!-- FULL HALF-PITCH BORDER -->
+      <div class="pitch-border"></div>
+
 
       <!-- =================================================
-           HALF PITCH CONTAINER
-           DOES NOT ROTATE
+           HALF CENTRE CIRCLE
            ================================================= -->
 
-      <div class="away-side">
+      <div class="centre-circle"></div>
+
+      <div class="centre-spot"></div>
 
 
-        <!-- =================================================
-             ROTATING PITCH LAYER
-             EVERYTHING INSIDE ROTATES TOGETHER
-             ================================================= -->
+      <!-- =================================================
+           LEFT PENALTY AREA
+           ================================================= -->
 
-        <div class="pitch-layer">
+      <div class="penalty-area penalty-area-left"></div>
 
+      <div class="goal-area goal-area-left"></div>
 
-          <!-- =================================================
-               PITCH MARKINGS
-               ================================================= -->
+      <div class="penalty-spot penalty-spot-left"></div>
 
-          <div class="pitch-markings">
+      <div class="penalty-arc penalty-arc-left"></div>
 
 
-            <!-- FULL HALF-PITCH BORDER -->
+      <!-- =================================================
+           ONE GOAL
+           ================================================= -->
 
-            <div class="pitch-border"></div>
-
-
-            <!-- =================================================
-                 CENTRE LINE
-                 RIGHT EDGE OF HALF PITCH
-                 ================================================= -->
-
-            <div class="centre-line"></div>
+      <div class="goal goal-left"></div>
 
 
-            <!-- =================================================
-                 HALF CENTRE CIRCLE
-                 ================================================= -->
+      <!-- =================================================
+           CORNER ARCS
+           ================================================= -->
 
-            <div class="centre-circle"></div>
+      <div class="corner-arc corner-top-left"></div>
 
+      <div class="corner-arc corner-bottom-left"></div>
 
-            <!-- CENTRE SPOT -->
-
-            <div class="centre-spot"></div>
-
-
-            <!-- =================================================
-                 LEFT PENALTY AREA
-                 ================================================= -->
-
-            <div
-              class="penalty-area penalty-area-left"
-            ></div>
+    </div>
 
 
-            <!-- =================================================
-                 LEFT GOAL AREA
-                 ================================================= -->
+    <!-- =================================================
+         FULL GRID
+         ================================================= -->
 
-            <div
-              class="goal-area goal-area-left"
-            ></div>
+    <ion-grid class="inner-grid">
 
+      <ion-row
+        v-for="y in sizeY"
+        :key="`row-${y}`"
+      >
 
-            <!-- =================================================
-                 LEFT PENALTY SPOT
-                 ================================================= -->
+        <ion-col
+          v-for="x in sizeX"
+          :key="`cell-${x}-${y}`"
+          class="grid-cell"
+        >
 
-            <div
-              class="penalty-spot penalty-spot-left"
-            ></div>
+          <div
+            v-if="getSlot(x, y)"
+            class="slot-content"
+          >
 
+            <ion-button
+              :title="getSlot(x, y)?.slot_name"
+              fill="clear"
+              color="secondary"
+              class="slot-button"
+            >
 
-            <!-- =================================================
-                 LEFT PENALTY ARC
-                 ================================================= -->
+              <ion-icon
+                :icon="personSharp"
+                class="slot-icon"
+              />
 
-            <div
-              class="penalty-arc penalty-arc-left"
-            ></div>
-
-
-            <!-- =================================================
-                 LEFT GOAL
-                 ================================================= -->
-
-            <div
-              class="goal goal-left"
-            ></div>
-
-
-            <!-- =================================================
-                 TOP LEFT CORNER ARC
-                 ================================================= -->
-
-            <div
-              class="corner-arc corner-top-left"
-            ></div>
+            </ion-button>
 
 
-            <!-- =================================================
-                 BOTTOM LEFT CORNER ARC
-                 ================================================= -->
-
-            <div
-              class="corner-arc corner-bottom-left"
-            ></div>
-
+            <span class="slot-name text-light">
+              Majiya
+            </span>
 
           </div>
 
+        </ion-col>
 
-          <!-- =================================================
-               FULL 16 × 15 GRID
-               ================================================= -->
+      </ion-row>
 
-          <ion-grid class="inner-grid">
-
-
-            <ion-row
-              v-for="y in sizeY"
-              :key="`row-${y}`"
-            >
-
-
-              <ion-col
-                v-for="x in sizeX"
-                :key="`cell-${x}-${y}`"
-                class="grid-cell"
-              >
-
-
-                <!-- =================================================
-                     PLAYER / SLOT
-                     ================================================= -->
-
-                <div
-                  v-if="getSlot(x, y)"
-                  class="slot"
-                  :title="getSlot(x, y)?.slot_name"
-                >
-                  <span class="slot-text">
-                    {{ getSlot(x, y)?.slot_code }}
-                  </span>
-                  </div>
-
-
-              </ion-col>
-
-
-            </ion-row>
-
-
-          </ion-grid>
-
-
-        </div>
-
-      </div>
-
-    </div>
+    </ion-grid>
 
   </div>
 
 </template>
-
 
 
 <script setup lang="ts">
@@ -187,16 +118,32 @@ import {
   IonGrid,
   IonRow,
   IonCol,
-  IonSelect,
-  IonSelectOption
+  IonIcon,
+  IonButton
 } from '@ionic/vue'
 
 import {
   ref,
-  computed, watch
+  computed,
+  watch
 } from 'vue'
 
+import {
+  personSharp
+} from 'ionicons/icons'
+
 import api from '@/api'
+
+
+/*
+|--------------------------------------------------------------------------
+| PROPS
+|--------------------------------------------------------------------------
+*/
+
+const props = defineProps<{
+  formation_id: number | null
+}>()
 
 
 /*
@@ -206,7 +153,7 @@ import api from '@/api'
 |
 | Full visible half-pitch:
 |
-| 16 columns × 15 rows
+| 19 columns × 17 rows
 |
 */
 
@@ -270,14 +217,11 @@ interface Formation {
 |--------------------------------------------------------------------------
 */
 
-const formations =
-  ref<Formation[]>([])
+const formations = ref<Formation[]>([])
 
-const slots =
-  ref<Slot[]>([])
+const slots = ref<Slot[]>([])
 
-const formation_id =
-  ref<number | null>(null)
+const formation_id = ref<number | null>(null)
 
 
 /*
@@ -343,6 +287,37 @@ const getSlot = (
 
 /*
 |--------------------------------------------------------------------------
+| FILTER SLOTS
+|--------------------------------------------------------------------------
+*/
+
+const filterSlots = () => {
+
+  const formation =
+    formations.value.find(
+      formation =>
+        formation.id === props.formation_id
+    )
+
+  if (!formation) {
+
+    slots.value = []
+
+    return
+
+  }
+
+  formation_id.value =
+    formation.id
+
+  slots.value =
+    formation.slots ?? []
+
+}
+
+
+/*
+|--------------------------------------------------------------------------
 | FETCH FORMATIONS
 |--------------------------------------------------------------------------
 */
@@ -358,24 +333,38 @@ const fetchData = async () => {
         '/settings/formations'
       )
 
-    // formations.value = data?.formations ?? []
-    slots.value = data?.slots ?? []
+
+    formations.value =
+      data?.formations ?? []
 
 
     /*
-     * Automatically select first
-     * formation if one exists.
+     * If parent supplied a formation,
+     * use that formation.
      */
 
     if (
-      formations.value.length > 0 &&
-      formation_id.value === null
+      props.formation_id !== null
+    ) {
+
+      filterSlots()
+
+    }
+
+    /*
+     * Otherwise automatically select
+     * the first formation.
+     */
+
+    else if (
+      formations.value.length > 0
     ) {
 
       formation_id.value =
         formations.value[0].id
 
-      slots.value = formations.value[0].slots ?? []
+      slots.value =
+        formations.value[0].slots ?? []
 
     }
 
@@ -397,21 +386,25 @@ const fetchData = async () => {
 
 /*
 |--------------------------------------------------------------------------
-| FILTER SLOTS
+| WATCH FORMATION
 |--------------------------------------------------------------------------
 */
 
-const filterSlots = () => {
+watch(
+  () => props.formation_id,
 
-  const formation = formations.value.find(formation =>formation.id === props.formation_id)
+  () => {
 
-  if (!formation) {
-    return
+    if (
+      props.formation_id !== null
+    ) {
+
+      filterSlots()
+
+    }
+
   }
-
-  slots.value = formation.slots ?? []
-
-}
+)
 
 
 /*
@@ -422,45 +415,10 @@ const filterSlots = () => {
 
 fetchData()
 
-const props = defineProps<{
-  formation_id: number | null
-}>()
-
-watch(
-  () => props.formation_id,
-  (newFormationId) => {
-    filterSlots()
-  },
-  {
-    immediate: true
-  }
-)
-
 </script>
 
 
-
 <style scoped>
-
-
-/* ============================================================
-   FORMATION WRAPPER
-   ============================================================ */
-
-.formation-wrapper {
-
-  width: 100%;
-
-  max-width: 100%;
-
-  margin: 0;
-
-  padding: 0;
-
-  box-sizing: border-box;
-
-}
-
 
 /* ============================================================
    FORMATION BODY
@@ -468,12 +426,20 @@ watch(
 
 .formation-body {
 
+  position: relative;
+
   display: flex;
 
   width: 100%;
 
   max-width: 100%;
 
+  min-width: 0;
+
+  min-height: 0;
+
+  flex: 1 1 auto;
+
   margin: 0;
 
   padding: 0;
@@ -482,84 +448,17 @@ watch(
 
   box-sizing: border-box;
 
-}
-
-
-/* ============================================================
-   HALF PITCH
-   ============================================================ */
-
-.away-side {
-
-  position: relative;
-
-  flex: 1 1 auto;
-
-  width: 100%;
-
-  min-width: 0;
-
   /*
-   * Half pitch ratio.
+   * PITCH ASPECT RATIO
    */
 
-  aspect-ratio: 50/54;
-
-  height: auto;
-
-  margin: 0;
-
-  padding: 0;
+  aspect-ratio: 50 / 54;
 
   background:
     rgb(100, 165, 100);
 
   color:
     rgb(255, 255, 255);
-
-  overflow: hidden;
-
-  box-sizing: border-box;
-
-}
-
-
-/* ============================================================
-   ROTATING PITCH LAYER
-   ============================================================ */
-
-/*
- * IMPORTANT:
- *
- * This is the element that rotates.
- *
- * Both:
- *
- *   .pitch-markings
- *   .inner-grid
- *
- * are children of this element.
- *
- * Therefore they rotate together.
- */
-
-.pitch-layer {
-
-  position: absolute;
-
-  inset: 0;
-
-  width: 100%;
-
-  height: 100%;
-
-  transform:
-    rotate(180deg);
-
-  transform-origin:
-    center center;
-
-  box-sizing: border-box;
 
 }
 
@@ -584,11 +483,21 @@ watch(
 
   box-sizing: border-box;
 
+  /*
+   * ROTATE THE PITCH MARKINGS 180°
+   */
+
+  transform:
+    rotate(180deg);
+
+  transform-origin:
+    center center;
+
 }
 
 
 /* ============================================================
-   HALF-PITCH BORDER
+   PITCH BORDER
    ============================================================ */
 
 .pitch-border {
@@ -598,7 +507,7 @@ watch(
   inset: 0;
 
   border:
-    0px solid
+    0 solid
     rgba(
       255,
       255,
@@ -608,21 +517,6 @@ watch(
 
   box-sizing: border-box;
 
-}
-
-
-/* ============================================================
-   CENTRE LINE
-   ============================================================ */
-
-   
-.centre-line {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  width: 1px;
-  background:rgba(255,255,255,0.9);
 }
 
 
@@ -734,7 +628,7 @@ watch(
 
 
 /* ============================================================
-   GOAL AREA
+   SIX-YARD BOX
    ============================================================ */
 
 .goal-area {
@@ -962,19 +856,11 @@ watch(
 
   display: grid;
 
-  /*
-   * 16 COLUMNS
-   */
-
   grid-template-columns:
     repeat(
       var(--size-x),
       minmax(0, 1fr)
     );
-
-  /*
-   * 15 ROWS
-   */
 
   grid-template-rows:
     repeat(
@@ -988,6 +874,19 @@ watch(
 
   box-sizing: border-box;
 
+  /*
+   * ROTATE THE GRID 180°
+   *
+   * This rotates the player positions,
+   * checkerboard and cells together.
+   */
+
+  transform:
+    rotate(180deg);
+
+  transform-origin:
+    center center;
+
 }
 
 
@@ -996,11 +895,6 @@ watch(
    ============================================================ */
 
 .inner-grid ion-row {
-
-  /*
-   * Let the parent CSS grid
-   * control the layout.
-   */
 
   display: contents;
 
@@ -1081,98 +975,141 @@ ion-col:nth-child(odd),
 .inner-grid ion-row:nth-child(even)
 ion-col:nth-child(even) {
   background:rgb(75,150,75);
+  /* background:rgb(100,175,100); */
 }
+
 
 .inner-grid ion-row:nth-child(odd)
 ion-col:nth-child(even),
 
 .inner-grid ion-row:nth-child(even)
 ion-col:nth-child(odd) {
-  background:rgb(100,175,100);
+  background:rgb(75,150,75);
+  /* background:rgb(100,175,100); */
 }
 
 
 /* ============================================================
-   SLOT / PLAYER
+   SLOT CONTENT
    ============================================================ */
 
-.slot {
+.slot-content {
 
   position: relative;
 
-  z-index: 5;
-
-  width:
-    clamp(
-      16px,
-      5vw,
-      22px
-    );
-
-  height:
-    clamp(
-      16px,
-      5vw,
-      22px
-    );
-
-  max-width: 70%;
-
-  max-height: 70%;
+  z-index: 10;
 
   display: flex;
+
+  flex-direction: column;
 
   align-items: center;
 
   justify-content: center;
 
-  border:
-    1px solid
-    rgba(
-      255,
-      255,
-      255,
-      0.9
-    );
+  width: 100%;
 
-  border-radius: 50%;
-
-  background:
-    rgba(
-      100,
-      100,
-      100,
-      0.65
-    );
+  height: 100%;
 
   color: #fff;
 
-  font-size:
-    clamp(
-      7px,
-      1.8vw,
-      10px
-    );
+  overflow: visible;
+
+  /*
+   * IMPORTANT:
+   *
+   * The grid is rotated 180°.
+   *
+   * Rotate the player content another 180°
+   * so that:
+   *
+   * 180° + 180° = 360°
+   *
+   * Therefore the player icon and text
+   * remain upright/readable.
+   */
+
+  transform:
+    rotate(180deg);
+
+  transform-origin:
+    center center;
+
+}
+
+
+/* ============================================================
+   SLOT BUTTON
+   ============================================================ */
+
+.slot-button {
+
+  --padding-start: 0;
+
+  --padding-end: 0;
+
+  --padding-top: 0;
+
+  --padding-bottom: 0;
+
+  --margin-start: 0;
+
+  --margin-end: 0;
+
+  --margin-top: 0;
+
+  --margin-bottom: 0;
+
+  margin: 0;
+
+  min-width: 22px;
+
+  min-height: 22px;
+
+  height: 22px;
+
+}
+
+
+/* ============================================================
+   SLOT ICON
+   ============================================================ */
+
+.slot-icon {
+
+  font-size: 20px;
+
+  margin: 0;
+
+}
+
+
+/* ============================================================
+   SLOT NAME
+   ============================================================ */
+
+.slot-name {
+
+  display: block;
+
+  color: #fff;
+
+  font-size: 9px;
 
   font-weight: 700;
 
   line-height: 1;
 
+  white-space: nowrap;
+
   text-align: center;
 
-  cursor: pointer;
+  margin-top: -2px;
 
-  user-select: none;
-
-  flex-shrink: 0;
-
-  box-sizing: border-box;
+  overflow: visible;
 
 }
 
-.slot-text {
-  transform: rotate(180deg);
-}
 
 /* ============================================================
    MOBILE
@@ -1180,21 +1117,25 @@ ion-col:nth-child(odd) {
 
 @media (max-width: 576px) {
 
-  .slot {
+  .slot-button {
 
-    width:
-      clamp(
-        15px,
-        5vw,
-        20px
-      );
+    min-width: 20px;
 
-    height:
-      clamp(
-        15px,
-        5vw,
-        20px
-      );
+    min-height: 20px;
+
+    height: 20px;
+
+  }
+
+
+  .slot-icon {
+
+    font-size: 18px;
+
+  }
+
+
+  .slot-name {
 
     font-size: 6px;
 
@@ -1209,11 +1150,25 @@ ion-col:nth-child(odd) {
 
 @media (max-width: 360px) {
 
-  .slot {
+  .slot-button {
 
-    width: 15px;
+    min-width: 17px;
 
-    height: 15px;
+    min-height: 17px;
+
+    height: 17px;
+
+  }
+
+
+  .slot-icon {
+
+    font-size: 15px;
+
+  }
+
+
+  .slot-name {
 
     font-size: 5px;
 
@@ -1222,4 +1177,3 @@ ion-col:nth-child(odd) {
 }
 
 </style>
-```

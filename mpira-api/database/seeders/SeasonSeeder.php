@@ -10,7 +10,7 @@ class SeasonSeeder extends Seeder
     public function run()
     {
         $startYear= 2020;
-        $number_of_seasons = 100;
+        $number_of_seasons = 50;
         
         $bar = $this->command->getOutput()->createProgressBar($number_of_seasons);
         $bar->start();

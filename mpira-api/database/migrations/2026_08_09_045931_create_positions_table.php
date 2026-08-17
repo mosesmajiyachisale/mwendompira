@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('position_name', 30)->unique();
             $table->string('position_code', 4)->unique();
             $table->text('position_desc')->nullable();
-            $table->foreignId('position_type_id')->nullable()->constrained('position_types')->onDelete('cascade');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });

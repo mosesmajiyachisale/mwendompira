@@ -43,6 +43,21 @@
       <ion-menu-toggle :auto-hide="true">
         <ion-item
           button
+          :routerLink="{ name: 'providers.index' }"
+          :color="isActive('providers.index') ? 'lighter-dark' : 'light-dark'"
+          :class="[
+            'submenu-item',
+            isActive('providers.index') ? 'submenu-item-active' : ''
+          ]"
+        >
+          <ion-icon :icon="manOutline" slot="start"></ion-icon>
+          <ion-label>Providers</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+      
+      <ion-menu-toggle :auto-hide="true">
+        <ion-item
+          button
           :routerLink="{ name: 'players.index' }"
           :color="isActive('players.index') ? 'lighter-dark' : 'light-dark'"
           :class="[
@@ -73,11 +88,11 @@
       <ion-menu-toggle :auto-hide="true">
         <ion-item
           button
-          :routerLink="{ name: 'coaches.index' }"
-          :color="isActive('coaches.index') ? 'lighter-dark' : 'light-dark'"
+          :routerLink="{ name: 'positions.index' }"
+          :color="isActive('positions.index') ? 'lighter-dark' : 'light-dark'"
           :class="[
             'submenu-item',
-            isActive('coaches.index') ? 'submenu-item-active' : ''
+            isActive('positions.index') ? 'submenu-item-active' : ''
           ]"
         >
           <ion-icon :icon="manOutline" slot="start"></ion-icon>

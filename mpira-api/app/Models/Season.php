@@ -25,5 +25,10 @@ class Season extends Model
     {
         return $this->hasMany(Participation::class);
     }
+    
+    public function teamPlayers(): HasMany
+    {
+        return $this->hasMany(TeamPlayer::class);
+    }
 
 }

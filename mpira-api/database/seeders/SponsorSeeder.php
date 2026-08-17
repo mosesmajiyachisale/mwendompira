@@ -21,6 +21,34 @@ class SponsorSeeder extends Seeder
                 'sponsor_desc'    => null,
             ], 
             [
+                'sponsor_name'    => 'First Capital Bank',
+                'sponsor_code'    => 'FCB',
+                'sponsor_desc'    => null,
+            ], 
+            
+            [
+                'sponsor_name'    => 'Be Forward Car Importers',
+                'sponsor_code'    => 'BeForward',
+                'sponsor_desc'    => null,
+            ], 
+            [
+                'sponsor_name'    => 'Nyasa Manufacturing Limited',
+                'sponsor_code'    => 'Nyasa',
+                'sponsor_desc'    => null,
+            ], 
+            [
+                'sponsor_name'    => 'Malawi Defence Force',
+                'sponsor_code'    => 'MDF',
+                'sponsor_desc'    => null,
+            ], 
+            
+            [
+                'sponsor_name'    => 'Prophet Sheperd Bushiri Ministries',
+                'sponsor_code'    => 'PSB',
+                'sponsor_desc'    => null,
+            ], 
+
+            [
                 'sponsor_name'    => 'Airtel Malawi',
                 'sponsor_code'    => 'Airtel',
                 'sponsor_desc'    => null,

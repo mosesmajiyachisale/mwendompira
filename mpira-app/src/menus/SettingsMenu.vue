@@ -68,7 +68,7 @@
           ]"
         >
           <ion-icon :icon="walkOutline" slot="start"></ion-icon>
-          <ion-label>Fields</ion-label>
+          <ion-label>Fields of Study</ion-label>
         </ion-item>
       </ion-menu-toggle>
 

@@ -78,7 +78,7 @@
           <ion-button
             :title="getSlot(x, y)?.slot_name"
             fill="clear"
-            color="light"
+            color="danger"
             class="slot-button"
           >
             <ion-icon
@@ -843,8 +843,8 @@ ion-col:nth-child(odd),
 
 .inner-grid ion-row:nth-child(even)
 ion-col:nth-child(even) {
-  /* background:rgb(75, 150, 75); */
-  background:rgb(100, 175, 100);
+  background:rgb(75, 150, 75);
+  /* background:rgb(100, 175, 100); */
 }
 
 

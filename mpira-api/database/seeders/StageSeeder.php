@@ -13,25 +13,9 @@ class StageSeeder extends Seeder
 
             /*
             |--------------------------------------------------------------------------
-            | League
+            | League has no stages
             |--------------------------------------------------------------------------
             */
-
-            [
-                'id' => 1,
-                'stage_name' => 'Round 1',
-                'stage_code' => 'R1',
-                'stage_desc' => 'First round of league fixtures where teams play according to the tournament schedule.',
-                'tournament_type_id' => 1,
-            ],
-
-            [
-                'id' => 2,
-                'stage_name' => 'Round 2',
-                'stage_code' => 'R2',
-                'stage_desc' => 'Second round of league fixtures where teams play the return fixtures.',
-                'tournament_type_id' => 1,
-            ],
 
 
             /*
@@ -41,7 +25,7 @@ class StageSeeder extends Seeder
             */
 
             [
-                'id' => 3,
+                'id' => null,
                 'stage_name' => 'Group Stage',
                 'stage_code' => 'GROUP',
                 'stage_desc' => 'Teams compete in groups with the best-performing teams progressing to the knockout stage.',
@@ -49,7 +33,7 @@ class StageSeeder extends Seeder
             ],
 
             [
-                'id' => 4,
+                'id' => null,
                 'stage_name' => 'Round of 32',
                 'stage_code' => 'R32',
                 'stage_desc' => 'Knockout round involving 32 teams, with winners progressing to the Round of 16.',
@@ -57,7 +41,7 @@ class StageSeeder extends Seeder
             ],
 
             [
-                'id' => 5,
+                'id' => null,
                 'stage_name' => 'Round of 16',
                 'stage_code' => 'R16',
                 'stage_desc' => 'Knockout round involving 16 teams, with winners progressing to the quarter-finals.',
@@ -65,7 +49,7 @@ class StageSeeder extends Seeder
             ],
 
             [
-                'id' => 6,
+                'id' => null,
                 'stage_name' => 'Quarter-Finals',
                 'stage_code' => 'QF',
                 'stage_desc' => 'Knockout round involving eight teams, with winners progressing to the semi-finals.',
@@ -73,7 +57,7 @@ class StageSeeder extends Seeder
             ],
 
             [
-                'id' => 7,
+                'id' => null,
                 'stage_name' => 'Semi-Finals',
                 'stage_code' => 'SF',
                 'stage_desc' => 'Knockout round involving four teams, with winners progressing to the final.',
@@ -81,7 +65,7 @@ class StageSeeder extends Seeder
             ],
 
             [
-                'id' => 8,
+                'id' => null,
                 'stage_name' => 'Third Place',
                 'stage_code' => '3P',
                 'stage_desc' => 'Match between the losing teams from the semi-finals to determine third place.',
@@ -89,7 +73,7 @@ class StageSeeder extends Seeder
             ],
 
             [
-                'id' => 9,
+                'id' => null,
                 'stage_name' => 'Final',
                 'stage_code' => 'F',
                 'stage_desc' => 'Final match that determines the tournament winner.',
@@ -102,9 +86,33 @@ class StageSeeder extends Seeder
             | Super Cup
             |--------------------------------------------------------------------------
             */
+            
+            [
+                'id' => null,
+                'stage_name' => 'Quarter-Finals',
+                'stage_code' => 'QF',
+                'stage_desc' => 'Knockout round involving eight teams, with winners progressing to the semi-finals.',
+                'tournament_type_id' => 3,
+            ],
 
             [
-                'id' => 10,
+                'id' => null,
+                'stage_name' => 'Semi-Finals',
+                'stage_code' => 'SF',
+                'stage_desc' => 'Knockout round involving four teams, with winners progressing to the final.',
+                'tournament_type_id' => 3,
+            ],
+
+            [
+                'id' => null,
+                'stage_name' => 'Third Place',
+                'stage_code' => '3P',
+                'stage_desc' => 'Match between the losing teams from the semi-finals to determine third place.',
+                'tournament_type_id' => 3,
+            ],
+
+            [
+                'id' => null,
                 'stage_name' => 'Final',
                 'stage_code' => 'F',
                 'stage_desc' => 'Single final match between the winners of major tournaments.',
@@ -117,14 +125,9 @@ class StageSeeder extends Seeder
             | Playoff
             |--------------------------------------------------------------------------
             */
-            /*
-            |--------------------------------------------------------------------------
-            | Playoff
-            |--------------------------------------------------------------------------
-            */
             
             [
-                'id' => 11,
+                'id' => null,
                 'stage_name' => 'Preliminary Round',
                 'stage_code' => 'PRELIM',
                 'stage_desc' => 'Opening playoff round used to reduce the number of participating teams before the main playoff rounds.',
@@ -132,7 +135,7 @@ class StageSeeder extends Seeder
             ],
             
             [
-                'id' => 12,
+                'id' => null,
                 'stage_name' => 'Round 1',
                 'stage_code' => 'R1',
                 'stage_desc' => 'First main round of playoff matches used to determine which teams progress to the next stage.',
@@ -140,7 +143,7 @@ class StageSeeder extends Seeder
             ],
             
             [
-                'id' => 13,
+                'id' => null,
                 'stage_name' => 'Round 2',
                 'stage_code' => 'R2',
                 'stage_desc' => 'Second round of playoff matches used to determine the teams progressing to the final stages.',
@@ -148,7 +151,7 @@ class StageSeeder extends Seeder
             ],
             
             [
-                'id' => 14,
+                'id' => null,
                 'stage_name' => 'Semi-Finals',
                 'stage_code' => 'SF',
                 'stage_desc' => 'Semi-final playoff matches between the remaining teams, with winners progressing to the final.',
@@ -156,7 +159,7 @@ class StageSeeder extends Seeder
             ],
             
             [
-                'id' => 15,
+                'id' => null,
                 'stage_name' => 'Third Place',
                 'stage_code' => '3P',
                 'stage_desc' => 'Playoff match between the losing semi-finalists to determine third place.',
@@ -164,17 +167,13 @@ class StageSeeder extends Seeder
             ],
             
             [
-                'id' => 16,
+                'id' => null,
                 'stage_name' => 'Final',
                 'stage_code' => 'F',
                 'stage_desc' => 'Final playoff match used to determine the playoff winner or final qualification outcome.',
                 'tournament_type_id' => 4,
             ],
-            /*
-            |--------------------------------------------------------------------------
-            | Friendly has no stages
-            |--------------------------------------------------------------------------
-            */
+
 
 
         ];

@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('position_types', function (Blueprint $table) {
+        Schema::create('provider_types', function (Blueprint $table) {
             $table->id();
-            $table->string('position_type_name',30)->unique();
+            $table->string('provider_type_name',30)->unique();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('position_types');
+        Schema::dropIfExists('provider_types');
     }
 };

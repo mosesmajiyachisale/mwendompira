@@ -45,11 +45,11 @@
       <ion-menu-toggle :auto-hide="true">
         <ion-item
           button
-          :routerLink="{ name: 'sponsors.index' }"
-          :color="isActive('sponsors.index') ? 'lighter-dark' : 'light-dark'"
+          :routerLink="{ name: 'phases.index' }"
+          :color="isActive('phases.index') ? 'lighter-dark' : 'light-dark'"
           :class="[
             'submenu-item',
-            isActive('sponsors.index') ? 'submenu-item-active' : ''
+            isActive('phases.index') ? 'submenu-item-active' : ''
           ]"
         >
           <ion-icon :icon="briefcaseOutline" slot="start"></ion-icon>
@@ -92,11 +92,11 @@
       <ion-menu-toggle :auto-hide="true">
         <ion-item
           button
-          :routerLink="{ name: 'stadiums.index' }"
-          :color="isActive('stadiums.index') ? 'lighter-dark' : 'light-dark'"
+          :routerLink="{ name: 'stages.index' }"
+          :color="isActive('stages.index') ? 'lighter-dark' : 'light-dark'"
           :class="[
             'submenu-item',
-            isActive('stadiums.index') ? 'submenu-item-active' : ''
+            isActive('stages.index') ? 'submenu-item-active' : ''
           ]"
         >
           <ion-icon :icon="locationOutline" slot="start"></ion-icon>

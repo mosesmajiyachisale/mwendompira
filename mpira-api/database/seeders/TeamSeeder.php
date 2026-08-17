@@ -290,6 +290,28 @@ class TeamSeeder extends Seeder
                 'est' => null,
                 'is_active' => true,
             ],
+            [
+                'team_name' => 'LUANAR Mitundu',
+                'team_code' => 'LMFC',
+                'nickname' => null,
+                'est' => null,
+                'is_active' => true,
+            ],
+            [
+                'team_name' => 'Masters Security',
+                'team_code' => 'MSFC',
+                'nickname' => null,
+                'est' => null,
+                'is_active' => true,
+            ],
+            [
+                'team_name' => 'Creck Sporting',
+                'team_code' => 'CSFC',
+                'nickname' => null,
+                'est' => null,
+                'is_active' => true,
+            ],
+
         ];
 
         $bar = $this->command->getOutput()->createProgressBar(count($teams));

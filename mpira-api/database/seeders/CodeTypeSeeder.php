@@ -22,7 +22,7 @@ class CodeTypeSeeder extends Seeder
                 
                 [
                     'id' => 2,
-                    'code_type_name' => 'Coach',
+                    'code_type_name' => 'Provider',
                 ],
 
             ];

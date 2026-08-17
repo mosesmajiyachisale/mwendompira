@@ -25,7 +25,7 @@
             v-model="formData.nickname"
             placeholder="Enter Nickname"
             class="compact-input"
-            :required="true"
+            :required="false"
           />
         </div>
       </div>

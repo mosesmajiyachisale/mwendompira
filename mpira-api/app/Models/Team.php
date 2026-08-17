@@ -23,4 +23,9 @@ class Team extends Model
     {
         return $this->belongsTo(Location::class, 'district_id');
     }
+    
+    public function teamPlayers(): HasMany
+    {
+        return $this->hasMany(TeamPlayer::class);
+    }
 }

@@ -30,25 +30,10 @@ class PersonSeeder extends Seeder
                 'gender'         => 'Male',
                 'dob'         => null,
             ],
-
-            [
-                'first_name'  => 'Getrude',
-                'middle_name' => 'Majiya',
-                'last_name'   => 'Uladi',
-                'gender'         => 'Female',
-                'dob'         => null,
-            ],
-            [
-                'first_name'  => 'Julius',
-                'middle_name' => 'Msamila',
-                'last_name'   => 'Mphonde',
-                'gender'         => 'Male',
-                'dob'         => null,
-            ],
         ];
 
         // Create a progress bar
-        $extra_persons = 10;
+        $extra_persons = 2;
         $bar = $this->command->getOutput()->createProgressBar(count($persons) + $extra_persons );
         $bar->start();
 

@@ -4,6 +4,7 @@ services:
     build:
       context: ./mpira-api
     container_name: mpira-api
+    restart: unless-stopped
     ports:
       - "8000:80"
     volumes:
@@ -16,6 +17,7 @@ services:
     build:
       context: ./mpira-app
     container_name: mpira-app
+    restart: unless-stopped
     ports:
       - "5173:5173"
     volumes:

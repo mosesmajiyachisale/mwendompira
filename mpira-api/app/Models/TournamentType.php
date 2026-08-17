@@ -14,9 +14,14 @@ class TournamentType extends Model
         'tournament__type_name',
         'tournament_type_desc',
     ];
-
-    public function tournament_type()
+    
+    public function tournaments()
     {
         return $this->hasMany(Tournament::class);
+    }
+
+    public function stages()
+    {
+        return $this->hasMany(Stage::class);
     }
 }

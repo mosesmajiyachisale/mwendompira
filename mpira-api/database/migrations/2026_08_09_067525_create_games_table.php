@@ -15,12 +15,14 @@ return new class extends Migration
             $table->id();
             $table->foreignId('season_id')->constrained('seasons')->onDelete('cascade');
             $table->foreignId('tournament_id')->constrained('tournaments')->onDelete('cascade');
-            $table->foreignId('stage_id')->constrained('stages')->onDelete('cascade');
+            $table->foreignId('stage_id')->nullable()->constrained('stages')->onDelete('cascade');
             $table->foreignId('home_team_id')->constrained('teams')->onDelete('cascade');
             $table->foreignId('away_team_id')->constrained('teams')->onDelete('cascade');
             $table->foreignId('venue_id')->constrained('locations')->onDelete('cascade');
-            $table->string('scheduled_at',20)->nullable();
-            $table->foreignId('status_id')->constrained('statuses')->onDelete('cascade');
+            $table->date('kick_off_date')->nullable();
+            $table->time('kick_off_time')->nullable();
+
+            $table->foreignId('status_id') ->nullable()->constrained('statuses')->nullOnDelete();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
 

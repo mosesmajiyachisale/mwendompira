@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('coach_qualifications', function (Blueprint $table) {
+        Schema::create('provider_qualifications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('coach_id')->constrained('coaches')->onDelete('cascade');
+            $table->foreignId('provider_id')->constrained('providers')->onDelete('cascade');
             $table->foreignId('qualification_id')->constrained('qualifications')->onDelete('cascade');
             $table->foreignId('field_id')->nullable()->constrained('fields')->onDelete('cascade');
             $table->string('issuing_organization',100)->nullable();
@@ -25,8 +25,8 @@ return new class extends Migration
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
 
             $table->unique(
-                ['coach_id','qualification_id'],
-                'unique_coach_qualification'
+                ['provider_id','qualification_id'],
+                'unique_provider_qualification'
             );
         });
     }
@@ -36,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('coach_qualifications');
+        Schema::dropIfExists('provider_qualifications');
     }
 };

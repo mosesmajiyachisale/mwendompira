@@ -1,39 +1,23 @@
 <template>
   <ion-page>
-
     <ion-content color="light" class="ion-no-padding">
-
       <div class="app-page">
 
         <ion-toolbar class="page-toolbar">
-          <ion-title>
-            Edit Season
-          </ion-title>
+          <ion-title>Stages</ion-title>
         </ion-toolbar>
 
-
-        <div class="page-content text-sm">
-
-          <SeasonsEditForm />
-
-          <SeasonsList
-            :key="seasonsListKey"
-            :seasons="seasons"
-            :loading="loading"
-          />
-
+        <div class="text-sm">
+          <StagesList  :key="stagesListKey"> </StagesList>
         </div>
 
       </div>
-
     </ion-content>
-
   </ion-page>
 </template>
 
 
 <script setup lang="ts">
-
 import {ref} from 'vue'
 import {onIonViewWillEnter} from '@ionic/vue'
 
@@ -42,18 +26,13 @@ import {
   IonContent,
   IonToolbar,
   IonTitle,
-  IonButtons,
-  IonButton,
-  IonIcon
 } from '@ionic/vue'
 
-
-import {arrowBack} from 'ionicons/icons'
-
-import SeasonsEditForm from './SeasonsEditForm.vue'
-import SeasonsList from './QualificationsList.vue/index.js'
+import {add} from 'ionicons/icons'
 
 import api from '@/api'
+import StagesList from './StagesList.vue'
+import PhasesList from '../phases/PhasesList.vue'
 
 
 interface Season{
@@ -73,13 +52,9 @@ interface Season{
 }
 
 
-
 const seasons = ref<Season[]>([])
 
 const loading = ref(false)
-
-const seasonsListKey = ref(0)
-
 
 
 async function fetchData(){
@@ -114,9 +89,8 @@ async function fetchData(){
 }
 
 
-
+const stagesListKey = ref(0)
 onIonViewWillEnter(()=>{
-  seasonsListKey.value = Date.now()
+  stagesListKey.value = Date.now()
 })
-
 </script>

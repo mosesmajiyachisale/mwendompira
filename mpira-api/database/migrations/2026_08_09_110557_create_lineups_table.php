@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('game_id')->constrained('games')->restrictOnDelete();
             $table->foreignId('team_id')->nullable()->constrained('teams')->nullOnDelete();
             $table->foreignId('formation_id')->constrained('formations')->restrictOnDelete();
-            $table->foreignId('coach_id')->nullable()->constrained('coaches')->restrictOnDelete();
+            $table->foreignId('coach_id')->nullable()->constrained('providers')->restrictOnDelete();
             $table->foreignId('captain_id')->nullable()->constrained('players')->restrictOnDelete();
             $table->boolean('is_default')->default(true);
             $table->timestamp('created_at')->useCurrent();

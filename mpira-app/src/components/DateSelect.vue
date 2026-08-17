@@ -6,10 +6,10 @@
         <!-- Year -->
         <ion-select
           v-model="selectedYear"
+          placeholder="Year"
           interface="popover"
           :interface-options="popoverOptions"
         >
-        
           <ion-select-option
             v-for="year in years"
             :key="year"
@@ -18,7 +18,6 @@
             {{ year }}
           </ion-select-option>
         </ion-select>
-  
   
         <!-- Month -->
         <ion-select
@@ -68,7 +67,7 @@
   
   
   const props = defineProps<{
-    modelValue:string
+    modelValue:string | null
     label?:string
     maxYear?:number
     minYear?:number
@@ -110,16 +109,14 @@
   
   
   const currentYear = new Date().getFullYear()
-  selectedYear.value = currentYear
+
   
   
   const years = computed(()=>{
   
-    const start =
-      props.maxYear ?? currentYear
+    const start = props.maxYear ?? currentYear
   
-    const end =
-      props.minYear ?? start - 100
+    const end = props.minYear ?? start - 100
   
   
     return Array.from(

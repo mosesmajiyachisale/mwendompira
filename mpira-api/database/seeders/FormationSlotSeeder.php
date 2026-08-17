@@ -67,7 +67,7 @@ class FormationSlotSeeder extends Seeder
                     ],
                     [
                         'formation_name' => '4-2-3-1',     
-                        'slots' => ['GK','LB', 'LCB', 'RCB', 'RB', 'LDM', 'RDM', 'Lw', 'CM', 'Rw', 'ST']
+                        'slots' => ['GK','LB', 'LCB', 'RCB', 'RB', 'LDM', 'RDM', 'LA', 'CAM', 'RA', 'ST']
                     ],
                     [
                         'formation_name' => '4-1-4-1',     
@@ -75,7 +75,7 @@ class FormationSlotSeeder extends Seeder
                     ],
                     [
                         'formation_name' => '4-1-3-2',     
-                        'slots' => ['GK','LB', 'LCB', 'RCB', 'RB', 'CDM', 'LM', 'CM', 'RM', 'LCF', 'RCF']
+                        'slots' => ['GK','LB', 'LCB', 'RCB', 'RB', 'CDM', 'LA', 'CAM', 'RA', 'LST', 'RST']
                     ],
                     [
                         'formation_name' => '4-1-2-3',     
@@ -96,7 +96,7 @@ class FormationSlotSeeder extends Seeder
                     ],
                     [
                         'formation_name' => '5-2-3',       
-                        'slots' => ['GK','LWB', 'LCB', 'SW', 'RCB', 'RWB', 'LCM', 'RCM', 'LF', 'RF', 'CF']
+                        'slots' => ['GK','LWB', 'LCB', 'SW', 'RCB', 'RWB', 'LDM', 'RDM', 'LF', 'RF', 'ST']
                     ],
                     [
                         'formation_name' => '5-1-4',       

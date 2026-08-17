@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('persons', function (Blueprint $table) {
             $table->id();
             $table->string('first_name',20);
-            $table->string('middle_name', 20)->default('');
+            $table->string('middle_name', 20)->nullable();
             $table->string('last_name',20);
             $table->enum('gender',['Male','Female'])->nullable();
             $table->date('dob')->nullable();            

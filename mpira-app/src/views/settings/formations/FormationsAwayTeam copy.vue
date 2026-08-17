@@ -2,123 +2,174 @@
 <template>
 
   <div
-    class="formation-wrapper"
+    class="formation-wrapper mb-0"
     :style="{
       '--size-x': sizeX,
       '--size-y': sizeY
     }"
   >
 
-    <!-- =====================================================
-         FORMATION SELECT
-         ===================================================== -->
-    <div class="formation-select py-1 px-2">
-
-      <div class="control-block">
-
-        <label class="control-block-label">
-          Formation
-        </label>
-
-        <ion-select
-          v-model="formation_id"
-          interface="popover"
-          placeholder="Select Formation"
-          :required="true"
-          @ionChange="filterSlots"
-        >
-
-          <ion-select-option
-            v-for="formation in formations"
-            :key="formation.id"
-            :value="formation.id"
-          >
-            {{ formation.formation_name }}
-          </ion-select-option>
-
-        </ion-select>
-
-      </div>
-
-    </div>
-
-
-    <!-- =====================================================
-         X AXIS
-         ===================================================== -->
-    <!-- <div class="x-axis-wrapper">
-
-      <div class="axis-corner">
-        axes
-      </div>
-
-      <div class="x-axis">
-
-        <div
-          v-for="x in sizeX"
-          :key="`x-${x}`"
-          class="axis-cell"
-        >
-          {{ x }}
-        </div>
-
-      </div>
-
-    </div> -->
-
-
-    <!-- =====================================================
-         FORMATION BODY
-         ===================================================== -->
     <div class="formation-body">
 
-      <!-- ===================================================
-           Y AXIS
-           =================================================== -->
-      <!-- <div class="y-axis">
+      <!-- =================================================
+           HALF PITCH CONTAINER
+           DOES NOT ROTATE
+           ================================================= -->
 
-        <div
-          v-for="y in sizeY"
-          :key="`y-${y}`"
-          class="axis-cell"
-        >
-          {{ y }}
-        </div>
-
-      </div> -->
-
-
-      <!-- ===================================================
-           AWAY TEAM GRID
-           =================================================== -->
       <div class="away-side">
 
-        <ion-grid class="inner-grid">
 
-          <ion-row
-            v-for="y in sizeY"
-            :key="`row-${y}`"
-          >
+        <!-- =================================================
+             ROTATING PITCH LAYER
+             EVERYTHING INSIDE ROTATES TOGETHER
+             ================================================= -->
 
-            <ion-col
-              v-for="x in sizeX"
-              :key="`cell-${x}-${y}`"
-              class="grid-cell"
+        <div class="pitch-layer">
+
+
+          <!-- =================================================
+               PITCH MARKINGS
+               ================================================= -->
+
+          <div class="pitch-markings">
+
+
+            <!-- FULL HALF-PITCH BORDER -->
+
+            <div class="pitch-border"></div>
+
+
+            <!-- =================================================
+                 CENTRE LINE
+                 RIGHT EDGE OF HALF PITCH
+                 ================================================= -->
+
+            <div class="centre-line"></div>
+
+
+            <!-- =================================================
+                 HALF CENTRE CIRCLE
+                 ================================================= -->
+
+            <div class="centre-circle"></div>
+
+
+            <!-- CENTRE SPOT -->
+
+            <div class="centre-spot"></div>
+
+
+            <!-- =================================================
+                 LEFT PENALTY AREA
+                 ================================================= -->
+
+            <div
+              class="penalty-area penalty-area-left"
+            ></div>
+
+
+            <!-- =================================================
+                 LEFT GOAL AREA
+                 ================================================= -->
+
+            <div
+              class="goal-area goal-area-left"
+            ></div>
+
+
+            <!-- =================================================
+                 LEFT PENALTY SPOT
+                 ================================================= -->
+
+            <div
+              class="penalty-spot penalty-spot-left"
+            ></div>
+
+
+            <!-- =================================================
+                 LEFT PENALTY ARC
+                 ================================================= -->
+
+            <div
+              class="penalty-arc penalty-arc-left"
+            ></div>
+
+
+            <!-- =================================================
+                 LEFT GOAL
+                 ================================================= -->
+
+            <div
+              class="goal goal-left"
+            ></div>
+
+
+            <!-- =================================================
+                 TOP LEFT CORNER ARC
+                 ================================================= -->
+
+            <div
+              class="corner-arc corner-top-left"
+            ></div>
+
+
+            <!-- =================================================
+                 BOTTOM LEFT CORNER ARC
+                 ================================================= -->
+
+            <div
+              class="corner-arc corner-bottom-left"
+            ></div>
+
+
+          </div>
+
+
+          <!-- =================================================
+               FULL 16 × 15 GRID
+               ================================================= -->
+
+          <ion-grid class="inner-grid">
+
+
+            <ion-row
+              v-for="y in sizeY"
+              :key="`row-${y}`"
             >
 
-              <div
-                v-if="getSlot(x, y)"
-                class="slot"
-                :title="getSlot(x, y)?.slot_name"
+
+              <ion-col
+                v-for="x in sizeX"
+                :key="`cell-${x}-${y}`"
+                class="grid-cell"
               >
-                {{ getSlot(x, y)?.slot_code }}
-              </div>
 
-            </ion-col>
 
-          </ion-row>
+                <!-- =================================================
+                     PLAYER / SLOT
+                     ================================================= -->
 
-        </ion-grid>
+                <div
+                  v-if="getSlot(x, y)"
+                  class="slot"
+                  :title="getSlot(x, y)?.slot_name"
+                >
+                  <span class="slot-text">
+                    {{ getSlot(x, y)?.slot_code }}
+                  </span>
+                  </div>
+
+
+              </ion-col>
+
+
+            </ion-row>
+
+
+          </ion-grid>
+
+
+        </div>
 
       </div>
 
@@ -127,6 +178,7 @@
   </div>
 
 </template>
+
 
 
 <script setup lang="ts">
@@ -141,7 +193,7 @@ import {
 
 import {
   ref,
-  computed
+  computed, watch
 } from 'vue'
 
 import api from '@/api'
@@ -151,11 +203,16 @@ import api from '@/api'
 |--------------------------------------------------------------------------
 | GRID DIMENSIONS
 |--------------------------------------------------------------------------
+|
+| Full visible half-pitch:
+|
+| 16 columns × 15 rows
+|
 */
 
-const sizeX = ref(16)
+const sizeX = ref(19)
 
-const sizeY = ref(15)
+const sizeY = ref(17)
 
 
 /*
@@ -174,21 +231,36 @@ const loading = ref(false)
 */
 
 interface Slot {
+
   id: number
+
   slot_side: string
+
   slot_code: string
+
   slot_name: string
+
   grid_x: number
+
   grid_y: number
+
   slot_desc: string
+
   position_id: number
+
 }
 
+
 interface Formation {
+
   id: number
+
   formation_name: string
+
   formation_desc: string
+
   slots: Slot[]
+
 }
 
 
@@ -198,9 +270,14 @@ interface Formation {
 |--------------------------------------------------------------------------
 */
 
-const formations = ref<Formation[]>([])
-const slots = ref<Slot[]>([])
-const formation_id = ref<number | null>(null)
+const formations =
+  ref<Formation[]>([])
+
+const slots =
+  ref<Slot[]>([])
+
+const formation_id =
+  ref<number | null>(null)
 
 
 /*
@@ -224,15 +301,6 @@ const selectedFormation =
 |--------------------------------------------------------------------------
 | SLOT MAP
 |--------------------------------------------------------------------------
-|
-| Original database coordinates remain unchanged.
-|
-| Example:
-|
-| 1-1 => Slot
-| 8-8 => Slot
-| 15-15 => Slot
-|
 */
 
 const slotMap =
@@ -259,40 +327,6 @@ const slotMap =
 |--------------------------------------------------------------------------
 | GET SLOT
 |--------------------------------------------------------------------------
-|
-| AWAY TEAM = HOME TEAM ROTATED 180 DEGREES
-|
-| Original:
-|
-|       FRONT
-|         ↑
-|         |
-| LEFT ←  +  → RIGHT
-|         |
-|         ↓
-|        BACK
-|
-|
-| Rotated 180°:
-|
-|        BACK
-|         ↑
-|         |
-| RIGHT ← + → LEFT
-|         |
-|         ↓
-|       FRONT
-|
-|
-| Coordinate transformation:
-|
-| new X = sizeX - old X + 1
-| new Y = sizeY - old Y + 1
-|
-| Since getSlot() receives the displayed
-| coordinate, we reverse that transformation
-| to find the original database coordinate.
-|
 */
 
 const getSlot = (
@@ -300,14 +334,8 @@ const getSlot = (
   y: number
 ): Slot | undefined => {
 
-  const originalX =
-    sizeX.value - x + 1
-
-  const originalY =
-    sizeY.value - y + 1
-
   return slotMap.value.get(
-    `${originalX}-${originalY}`
+    `${x}-${y}`
   )
 
 }
@@ -330,16 +358,15 @@ const fetchData = async () => {
         '/settings/formations'
       )
 
-    formations.value =
-      data?.formations ?? []
+    // formations.value = data?.formations ?? []
+    slots.value = data?.slots ?? []
 
-    slots.value =
-      data?.slots ?? []
 
     /*
-     * Automatically select the first
+     * Automatically select first
      * formation if one exists.
      */
+
     if (
       formations.value.length > 0 &&
       formation_id.value === null
@@ -348,8 +375,7 @@ const fetchData = async () => {
       formation_id.value =
         formations.value[0].id
 
-      slots.value =
-        formations.value[0].slots ?? []
+      slots.value = formations.value[0].slots ?? []
 
     }
 
@@ -377,22 +403,13 @@ const fetchData = async () => {
 
 const filterSlots = () => {
 
-  const formation =
-    formations.value.find(
-      formation =>
-        formation.id === formation_id.value
-    )
+  const formation = formations.value.find(formation =>formation.id === props.formation_id)
 
   if (!formation) {
-
-    slots.value = []
-
     return
-
   }
 
-  slots.value =
-    formation.slots ?? []
+  slots.value = formation.slots ?? []
 
 }
 
@@ -405,35 +422,25 @@ const filterSlots = () => {
 
 fetchData()
 
+const props = defineProps<{
+  formation_id: number | null
+}>()
+
+watch(
+  () => props.formation_id,
+  (newFormationId) => {
+    filterSlots()
+  },
+  {
+    immediate: true
+  }
+)
+
 </script>
 
 
+
 <style scoped>
-
-.formation-select ion-select {
-  --highlight-height: 0px;
-  --highlight-color-focused: transparent;
-}
-
-/* ============================================================
-   FORMATION CARD
-   ============================================================ */
-
-.formation-card {
-
-  width: 50%;
-
-  max-width: 100%;
-
-  height: auto;
-
-  margin: 0;
-
-  padding: 0;
-
-  box-sizing: border-box;
-
-}
 
 
 /* ============================================================
@@ -442,12 +449,6 @@ fetchData()
 
 .formation-wrapper {
 
-  --axis-size: 30px;
-
-  --size-x: 15;
-
-  --size-y: 15;
-
   width: 100%;
 
   max-width: 100%;
@@ -455,125 +456,6 @@ fetchData()
   margin: 0;
 
   padding: 0;
-
-  overflow: hidden;
-
-  box-sizing: border-box;
-
-}
-
-
-/* ============================================================
-   FORMATION SELECT
-   ============================================================ */
-
-.formation-select {
-
-  width: 100%;
-
-  box-sizing: border-box;
-
-}
-
-
-/* ============================================================
-   X AXIS
-   ============================================================ */
-
-.x-axis-wrapper {
-
-  display: flex;
-
-  width: 100%;
-
-  height: var(--axis-size);
-
-  margin: 0;
-
-  padding: 0;
-
-  box-sizing: border-box;
-
-}
-
-
-/* ============================================================
-   X AXIS CORNER
-   ============================================================ */
-
-.axis-corner {
-
-  width: var(--axis-size);
-
-  min-width: var(--axis-size);
-
-  height: var(--axis-size);
-
-  flex: 0 0 var(--axis-size);
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  font-size: 9px;
-
-  font-weight: 600;
-
-  box-sizing: border-box;
-
-}
-
-
-/* ============================================================
-   X AXIS
-   ============================================================ */
-
-.x-axis {
-
-  flex: 1 1 auto;
-
-  width: auto;
-
-  min-width: 0;
-
-  height: var(--axis-size);
-
-  display: grid;
-
-  grid-template-columns:
-    repeat(
-      var(--size-x),
-      minmax(0, 1fr)
-    );
-
-  box-sizing: border-box;
-
-}
-
-
-/* ============================================================
-   X AXIS CELLS
-   ============================================================ */
-
-.x-axis .axis-cell {
-
-  width: 100%;
-
-  min-width: 0;
-
-  height: 100%;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  font-size: 9px;
-
-  line-height: 1;
 
   box-sizing: border-box;
 
@@ -604,74 +486,24 @@ fetchData()
 
 
 /* ============================================================
-   Y AXIS
-   ============================================================ */
-
-.y-axis {
-
-  width: var(--axis-size);
-
-  min-width: var(--axis-size);
-
-  flex: 0 0 var(--axis-size);
-
-  display: grid;
-
-  grid-template-rows:
-    repeat(
-      var(--size-y),
-      minmax(0, 1fr)
-    );
-
-  min-height: 0;
-
-  margin: 0;
-
-  padding: 0;
-
-  box-sizing: border-box;
-
-}
-
-
-/* ============================================================
-   Y AXIS CELLS
-   ============================================================ */
-
-.y-axis .axis-cell {
-
-  width: 100%;
-
-  min-height: 0;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  font-size: 9px;
-
-  line-height: 1;
-
-  box-sizing: border-box;
-
-}
-
-
-/* ============================================================
-   AWAY SIDE
+   HALF PITCH
    ============================================================ */
 
 .away-side {
 
+  position: relative;
+
   flex: 1 1 auto;
 
-  width: auto;
+  width: 100%;
 
   min-width: 0;
 
-  aspect-ratio: 1 / 1;
+  /*
+   * Half pitch ratio.
+   */
+
+  aspect-ratio: 50/54;
 
   height: auto;
 
@@ -693,10 +525,428 @@ fetchData()
 
 
 /* ============================================================
+   ROTATING PITCH LAYER
+   ============================================================ */
+
+/*
+ * IMPORTANT:
+ *
+ * This is the element that rotates.
+ *
+ * Both:
+ *
+ *   .pitch-markings
+ *   .inner-grid
+ *
+ * are children of this element.
+ *
+ * Therefore they rotate together.
+ */
+
+.pitch-layer {
+
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+
+  height: 100%;
+
+  transform:
+    rotate(180deg);
+
+  transform-origin:
+    center center;
+
+  box-sizing: border-box;
+
+}
+
+
+/* ============================================================
+   PITCH MARKINGS
+   ============================================================ */
+
+.pitch-markings {
+
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+
+  height: 100%;
+
+  z-index: 4;
+
+  pointer-events: none;
+
+  box-sizing: border-box;
+
+}
+
+
+/* ============================================================
+   HALF-PITCH BORDER
+   ============================================================ */
+
+.pitch-border {
+
+  position: absolute;
+
+  inset: 0;
+
+  border:
+    0px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.9
+    );
+
+  box-sizing: border-box;
+
+}
+
+
+/* ============================================================
+   CENTRE LINE
+   ============================================================ */
+
+   
+.centre-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 1px;
+  background:rgba(255,255,255,0.9);
+}
+
+
+/* ============================================================
+   HALF CENTRE CIRCLE
+   ============================================================ */
+
+.centre-circle {
+
+  position: absolute;
+
+  width: 18%;
+
+  aspect-ratio: 1 / 1;
+
+  right: -9%;
+
+  top: 50%;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.9
+    );
+
+  border-radius: 50%;
+
+  transform:
+    translateY(-50%);
+
+  box-sizing: border-box;
+
+}
+
+
+/* ============================================================
+   CENTRE SPOT
+   ============================================================ */
+
+.centre-spot {
+
+  position: absolute;
+
+  width: 1.4%;
+
+  aspect-ratio: 1 / 1;
+
+  right: 0;
+
+  top: 50%;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.95
+    );
+
+  border-radius: 50%;
+
+  transform:
+    translate(
+      50%,
+      -50%
+    );
+
+}
+
+
+/* ============================================================
+   PENALTY AREA
+   ============================================================ */
+
+.penalty-area {
+
+  position: absolute;
+
+  top: 25%;
+
+  width: 24%;
+
+  height: 50%;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.9
+    );
+
+  box-sizing: border-box;
+
+}
+
+
+.penalty-area-left {
+
+  left: 0;
+
+  border-left: none;
+
+}
+
+
+/* ============================================================
+   GOAL AREA
+   ============================================================ */
+
+.goal-area {
+
+  position: absolute;
+
+  top: 37.5%;
+
+  width: 13%;
+
+  height: 25%;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.9
+    );
+
+  box-sizing: border-box;
+
+}
+
+
+.goal-area-left {
+
+  left: 0;
+
+  border-left: none;
+
+}
+
+
+/* ============================================================
+   PENALTY SPOT
+   ============================================================ */
+
+.penalty-spot {
+
+  position: absolute;
+
+  width: 1.4%;
+
+  aspect-ratio: 1 / 1;
+
+  left: 16%;
+
+  top: 50%;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.95
+    );
+
+  border-radius: 50%;
+
+  transform:
+    translate(
+      -50%,
+      -50%
+    );
+
+}
+
+
+/* ============================================================
+   PENALTY ARC
+   ============================================================ */
+
+.penalty-arc {
+
+  position: absolute;
+
+  width: 16%;
+
+  aspect-ratio: 1 / 1;
+
+  left: 24%;
+
+  top: 50%;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.9
+    );
+
+  border-radius: 50%;
+
+  transform:
+    translate(
+      -50%,
+      -50%
+    );
+
+  clip-path:
+    inset(
+      0
+      0
+      0
+      50%
+    );
+
+}
+
+
+/* ============================================================
+   GOAL
+   ============================================================ */
+
+.goal {
+
+  position: absolute;
+
+  top: 42.5%;
+
+  width: 5%;
+
+  height: 15%;
+
+  border:
+    2px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.9
+    );
+
+  box-sizing: border-box;
+
+}
+
+
+.goal-left {
+
+  left: -3%;
+
+}
+
+
+/* ============================================================
+   TOP LEFT CORNER ARC
+   ============================================================ */
+
+.corner-arc {
+
+  position: absolute;
+
+  width: 4%;
+
+  height: 8%;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.9
+    );
+
+  border-radius: 50%;
+
+}
+
+
+.corner-top-left {
+
+  top: -4%;
+
+  left: -2%;
+
+}
+
+
+/* ============================================================
+   BOTTOM LEFT CORNER ARC
+   ============================================================ */
+
+.corner-bottom-left {
+
+  bottom: -4%;
+
+  left: -2%;
+
+}
+
+
+/* ============================================================
    ION GRID
    ============================================================ */
 
 .inner-grid {
+
+  position: absolute;
+
+  top: 0;
+
+  right: 0;
+
+  bottom: 0;
+
+  left: 0;
 
   width: 100%;
 
@@ -712,11 +962,19 @@ fetchData()
 
   display: grid;
 
+  /*
+   * 16 COLUMNS
+   */
+
   grid-template-columns:
     repeat(
       var(--size-x),
       minmax(0, 1fr)
     );
+
+  /*
+   * 15 ROWS
+   */
 
   grid-template-rows:
     repeat(
@@ -739,7 +997,20 @@ fetchData()
 
 .inner-grid ion-row {
 
+  /*
+   * Let the parent CSS grid
+   * control the layout.
+   */
+
   display: contents;
+
+  width: 100%;
+
+  height: 100%;
+
+  margin: 0 !important;
+
+  padding: 0 !important;
 
 }
 
@@ -750,11 +1021,11 @@ fetchData()
 
 .inner-grid ion-col {
 
-  width: auto;
+  width: 100%;
+
+  height: 100%;
 
   max-width: none;
-
-  height: auto;
 
   flex: none;
 
@@ -791,6 +1062,10 @@ fetchData()
 
   min-height: 0;
 
+  margin: 0;
+
+  padding: 0;
+
   box-sizing: border-box;
 
 }
@@ -805,30 +1080,27 @@ ion-col:nth-child(odd),
 
 .inner-grid ion-row:nth-child(even)
 ion-col:nth-child(even) {
-
-  background:
-    rgb(100, 175, 100);
-
+  background:rgb(75,150,75);
 }
-
 
 .inner-grid ion-row:nth-child(odd)
 ion-col:nth-child(even),
 
 .inner-grid ion-row:nth-child(even)
 ion-col:nth-child(odd) {
-
-  background:
-    rgb(75, 150, 75);
-
+  background:rgb(100,175,100);
 }
 
 
 /* ============================================================
-   SLOT
+   SLOT / PLAYER
    ============================================================ */
 
 .slot {
+
+  position: relative;
+
+  z-index: 5;
 
   width:
     clamp(
@@ -877,9 +1149,9 @@ ion-col:nth-child(odd) {
 
   font-size:
     clamp(
-      6px,
+      7px,
       1.8vw,
-      7px
+      10px
     );
 
   font-weight: 700;
@@ -898,46 +1170,15 @@ ion-col:nth-child(odd) {
 
 }
 
-
-/* ============================================================
-   TABLET
-   ============================================================ */
-
-@media (max-width: 768px) {
-
-  .formation-card {
-
-    width: 100%;
-
-  }
-
+.slot-text {
+  transform: rotate(180deg);
 }
-
 
 /* ============================================================
    MOBILE
    ============================================================ */
 
 @media (max-width: 576px) {
-
-  .formation-wrapper {
-
-    --axis-size: 24px;
-
-  }
-
-  .axis-corner {
-
-    font-size: 8px;
-
-  }
-
-  .x-axis .axis-cell,
-  .y-axis .axis-cell {
-
-    font-size: 8px;
-
-  }
 
   .slot {
 
@@ -967,25 +1208,6 @@ ion-col:nth-child(odd) {
    ============================================================ */
 
 @media (max-width: 360px) {
-
-  .formation-wrapper {
-
-    --axis-size: 20px;
-
-  }
-
-  .axis-corner {
-
-    font-size: 7px;
-
-  }
-
-  .x-axis .axis-cell,
-  .y-axis .axis-cell {
-
-    font-size: 7px;
-
-  }
 
   .slot {
 

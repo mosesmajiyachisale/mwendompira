@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('status_types', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('status_type_name',20)->unique();
+            $table->boolean('is_active')->default(true);
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
 

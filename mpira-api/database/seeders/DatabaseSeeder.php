@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,7 +17,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        //disable foreign key check
+        $this->call(DatabaseWithoutFKChecksSeeder::class);
+
         $this->command->info("\n=== STARTED PRELOADING DATA ===");
+        $this->call(StatusTypeSeeder::class);
+        $this->call(StatusSeeder::class);
         $this->call(QualificationTypeSeeder::class);
         $this->call(QualificationSeeder::class);
         $this->call(FieldSeeder::class);
@@ -33,13 +40,13 @@ class DatabaseSeeder extends Seeder
         $this->call(TournamentSeeder::class);
         $this->call(TeamSeeder::class);
         $this->call(SponsorSeeder::class);
+        $this->call(ParticipationSeeder::class);
         
         $this->call(CodeTypeSeeder::class);
         $this->call(CodeSeeder::class);
         
         $this->call(PhaseSeeder::class);
         $this->call(StageSeeder::class);
-        $this->call(PositionTypeSeeder::class);
         $this->call(PositionSeeder::class);
         $this->call(SlotSeeder::class);
         $this->call(FormationSeeder::class);
@@ -48,5 +55,7 @@ class DatabaseSeeder extends Seeder
         
         $this->call(EventTypeSeeder::class);
         $this->call(EventSeeder::class);
+        $this->call(ProviderTypeSeeder::class);
+        $this->call(ProviderSeeder::class);
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class StatusTYpeController extends Controller
+class ProviderTypeController extends Controller
 {
     //
 }
