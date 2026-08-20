@@ -3,3 +3,6 @@ githubkey.pub
 
 githubkey
 githubkey.pub
+
+backend/.env
+frontend/.env
