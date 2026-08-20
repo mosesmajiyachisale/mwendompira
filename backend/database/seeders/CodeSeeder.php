@@ -22,8 +22,8 @@ class CodeSeeder extends Seeder
 
         $TOTAL_NUMBER_OF_CODES = $NUMBER_OF_PROVIDER_CODES + $NUMBER_OF_PLAYER_CODES;
         
-        $providerCodeTypeId = CodeType::where('code_type_name','Provider')->value('id');
-        $playerCodeTypeId = CodeType::where('code_type_name','Player')->value('id');
+        $providerCodeTypeId = CodeType::where('code_type_name','Provider Code')->value('id');
+        $playerCodeTypeId = CodeType::where('code_type_name','Player Code')->value('id');
         
         $total=$TOTAL_NUMBER_OF_CODES*count($seasons);
 

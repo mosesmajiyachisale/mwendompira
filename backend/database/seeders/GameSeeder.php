@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Location;
 use App\Models\Game;
 use App\Models\Participation;
 use App\Models\Season;
@@ -28,35 +29,30 @@ class GameSeeder extends Seeder
             ->first();
 
         if (!$season) {
-
             $this->command->error(
                 'No season found.'
             );
-
             return;
         }
 
 
         /*
         |--------------------------------------------------------------------------
+        | VENUES
+        |--------------------------------------------------------------------------
+        */
+        
+        /*
+        |--------------------------------------------------------------------------
         | TOURNAMENT
         |--------------------------------------------------------------------------
         */
 
-        $tournament = Tournament::where(
-            'tournament_name',
-            'Super League'
-        )->first();
-
+        $tournament = Tournament::where('tournament_name','Super League')->first();
         if (!$tournament) {
-
-            $this->command->error(
-                'Super League tournament not found.'
-            );
-
+            $this->command->error('Super League tournament not found.');
             return;
         }
-
 
         /*
         |--------------------------------------------------------------------------
@@ -71,23 +67,11 @@ class GameSeeder extends Seeder
         */
 
         $teams = Participation::query()
-
-            ->where(
-                'season_id',
-                $season->id
-            )
-
-            ->where(
-                'tournament_id',
-                $tournament->id
-            )
-
+            ->where('season_id',$season->id)
+            ->where( 'tournament_id', $tournament->id)
             ->pluck('team_id')
-
             ->unique()
-
             ->values()
-
             ->all();
 
 
@@ -98,13 +82,8 @@ class GameSeeder extends Seeder
         */
 
         $teamCount = count($teams);
-
         if ($teamCount < 2) {
-
-            $this->command->error(
-                'At least two participating teams are required.'
-            );
-
+            $this->command->error('At least two participating teams are required.');
             return;
         }
 
@@ -116,31 +95,12 @@ class GameSeeder extends Seeder
         */
 
         $this->command->newLine();
-
-        $this->command->info(
-            '=========================================='
-        );
-
-        $this->command->info(
-            'GAME SEEDER'
-        );
-
-        $this->command->info(
-            '=========================================='
-        );
-
-        $this->command->info(
-            'Season: ' . $season->season_code
-        );
-
-        $this->command->info(
-            'Tournament: ' . $tournament->tournament_name
-        );
-
-        $this->command->info(
-            'Participating teams: ' . $teamCount
-        );
-
+        $this->command->info('==========================================');
+        $this->command->info('GAME SEEDER');
+        $this->command->info('==========================================');
+        $this->command->info('Season: ' . $season->season_code);
+        $this->command->info('Tournament: ' . $tournament->tournament_name);
+        $this->command->info('Participating teams: ' . $teamCount);
 
         /*
         |--------------------------------------------------------------------------
@@ -287,16 +247,14 @@ class GameSeeder extends Seeder
 
         $this->command->newLine();
 
-        $this->command->info(
-            '=========================================='
+        $this->command->info('=========================================='
         );
 
         $this->command->info(
             'GAME SEEDING COMPLETED'
         );
 
-        $this->command->info(
-            '=========================================='
+        $this->command->info('=========================================='
         );
 
         $this->command->info(
@@ -311,8 +269,7 @@ class GameSeeder extends Seeder
             "Match days: {$matchDayCount}"
         );
 
-        $this->command->info(
-            '=========================================='
+        $this->command->info('=========================================='
         );
     }
 
@@ -336,9 +293,7 @@ class GameSeeder extends Seeder
      * B vs D
      * C vs A
      */
-    private function generateRoundRobinRounds(
-        array $teams
-    ): array {
+    private function generateRoundRobinRounds(array $teams): array {
 
         /*
         |--------------------------------------------------------------------------
@@ -362,7 +317,6 @@ class GameSeeder extends Seeder
             $teams[] = null;
         }
 
-
         /*
         |--------------------------------------------------------------------------
         | VARIABLES
@@ -382,14 +336,9 @@ class GameSeeder extends Seeder
         |--------------------------------------------------------------------------
         */
 
-        for (
-            $round = 0;
-            $round < $roundCount;
-            $round++
-        ) {
-
+        for ($round = 0; $round < $roundCount; $round++) 
+            {
             $fixtures = [];
-
 
             /*
             |--------------------------------------------------------------------------
@@ -397,62 +346,31 @@ class GameSeeder extends Seeder
             |--------------------------------------------------------------------------
             */
 
-            for (
-                $i = 0;
-                $i < ($teamCount / 2);
-                $i++
-            ) {
-
+            for ($i = 0; $i < ($teamCount / 2); $i++ ) {
                 $home = $teams[$i];
-
-                $away = $teams[
-                    $teamCount - 1 - $i
-                ];
-
-
+                $away = $teams[$teamCount - 1 - $i];
                 /*
                 |--------------------------------------------------------------------------
                 | BYE
                 |--------------------------------------------------------------------------
                 */
 
-                if (
-                    $home === null ||
-                    $away === null
-                ) {
-
+                if ($home === null || $away === null) {
                     continue;
                 }
-
 
                 /*
                 |--------------------------------------------------------------------------
                 | HOME / AWAY BALANCING
-                |--------------------------------------------------------------------------
-                |
+                |--------------------------------------------------------------------------                |
                 | Alternate the home team between rounds.
-                |
                 */
 
                 if ($round % 2 === 0) {
-
-                    $fixtures[] = [
-
-                        'home_team_id' => $home,
-
-                        'away_team_id' => $away,
-
-                    ];
+                    $fixtures[] = [ 'home_team_id' => $home, 'away_team_id' => $away, ];
 
                 } else {
-
-                    $fixtures[] = [
-
-                        'home_team_id' => $away,
-
-                        'away_team_id' => $home,
-
-                    ];
+                    $fixtures[] = [ 'home_team_id' => $away, 'away_team_id' => $home,];
                 }
             }
 
@@ -464,7 +382,6 @@ class GameSeeder extends Seeder
             */
 
             $rounds[] = $fixtures;
-
 
             /*
             |--------------------------------------------------------------------------
@@ -478,33 +395,11 @@ class GameSeeder extends Seeder
             */
 
             $fixed = $teams[0];
-
-            $rotating = array_slice(
-                $teams,
-                1
-            );
-
-
-            $last = array_pop(
-                $rotating
-            );
-
-
-            array_unshift(
-                $rotating,
-                $last
-            );
-
-
-            $teams = array_merge(
-                [
-                    $fixed
-                ],
-                $rotating
-            );
+            $rotating = array_slice( $teams, 1);
+            $last = array_pop($rotating );
+            array_unshift($rotating,$last);
+            $teams = array_merge([$fixed],$rotating);
         }
-
-
         return $rounds;
     }
 
@@ -517,41 +412,20 @@ class GameSeeder extends Seeder
      *
      * The order of the match days remains the same.
      */
-    private function generateReverseRounds(
-        array $firstHalf
-    ): array {
-
+    private function generateReverseRounds(array $firstHalf): array 
+    {
         $secondHalf = [];
-
-
-        foreach (
-            $firstHalf as $round
-        ) {
-
+        foreach ( $firstHalf as $round) {
             $reverseRound = [];
-
-
-            foreach (
-                $round as $fixture
-            ) {
-
+            foreach ($round as $fixture) {
                 $reverseRound[] = [
-
-                    'home_team_id' =>
-                        $fixture['away_team_id'],
-
-                    'away_team_id' =>
-                        $fixture['home_team_id'],
-
+                    'home_team_id' => $fixture['away_team_id'],
+                    'away_team_id' => $fixture['home_team_id'],
                 ];
             }
 
-
-            $secondHalf[] =
-                $reverseRound;
+            $secondHalf[] = $reverseRound;
         }
-
-
         return $secondHalf;
     }
 
@@ -561,12 +435,14 @@ class GameSeeder extends Seeder
      *
      * Match day is determined by the round number.
      */
-    private function createFixtures(
-        array $rounds,
-        int $seasonId,
-        int $tournamentId
-    ): void {
+    private function createFixtures(array $rounds,int $seasonId,int $tournamentId): void 
+    {
 
+    
+        $venueIds = Location::whereHas('location_type', function ($query) {
+            $query->where('location_type_name', 'Stadium');
+        })->pluck('id');
+        
         /*
         |--------------------------------------------------------------------------
         | TOTAL MATCH DAYS
@@ -575,32 +451,22 @@ class GameSeeder extends Seeder
 
         $totalMatchDays = count($rounds);
 
-
         /*
         |--------------------------------------------------------------------------
         | PROGRESS BAR
         |--------------------------------------------------------------------------
         */
 
-        $bar = $this->command
-            ->getOutput()
-            ->createProgressBar(
-                $totalMatchDays
-            );
-
+        $bar = $this->command ->getOutput()->createProgressBar($totalMatchDays);
         $bar->start();
-
-
         /*
         |--------------------------------------------------------------------------
         | CREATE EACH MATCH DAY
         |--------------------------------------------------------------------------
         */
 
-        foreach (
-            $rounds as $roundIndex => $round
-        ) {
-
+        foreach ($rounds as $roundIndex => $round) 
+        {
             /*
             |--------------------------------------------------------------------------
             | MATCH DAY
@@ -616,9 +482,7 @@ class GameSeeder extends Seeder
             |
             */
 
-            $matchDay =
-                $roundIndex + 1;
-
+            $matchDay = $roundIndex + 1;
 
             /*
             |--------------------------------------------------------------------------
@@ -626,10 +490,8 @@ class GameSeeder extends Seeder
             |--------------------------------------------------------------------------
             */
 
-            foreach (
-                $round as $fixture
-            ) {
-
+            foreach ($round as $fixture) 
+            {
                 /*
                 |--------------------------------------------------------------------------
                 | FIND EXISTING GAME OR CREATE NEW GAME
@@ -641,21 +503,11 @@ class GameSeeder extends Seeder
                 */
 
                 $game = Game::firstOrNew([
-
-                    'season_id' =>
-                        $seasonId,
-
-                    'tournament_id' =>
-                        $tournamentId,
-
-                    'home_team_id' =>
-                        $fixture['home_team_id'],
-
-                    'away_team_id' =>
-                        $fixture['away_team_id'],
-
+                    'season_id' =>$seasonId,
+                    'tournament_id' =>$tournamentId,
+                    'home_team_id' =>$fixture['home_team_id'],
+                    'away_team_id' =>$fixture['away_team_id'],
                 ]);
-
 
                 /*
                 |--------------------------------------------------------------------------
@@ -663,9 +515,9 @@ class GameSeeder extends Seeder
                 |--------------------------------------------------------------------------
                 */
 
-                $game->match_day =
-                    $matchDay;
-
+                $game->match_day = $matchDay;
+                $venueId = $venueIds->random();
+                $game->venue_id = $venueId;
 
                 /*
                 |--------------------------------------------------------------------------
@@ -675,12 +527,13 @@ class GameSeeder extends Seeder
                 | These can be changed later by the Games UI.
                 |
                 */
+                
 
                 if (!$game->exists) {
 
                     $game->stage_id = null;
 
-                    $game->venue_id = null;
+                    // $game->venue_id = null;
 
                     $game->kick_off_date = null;
 

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class ResourceSeeder extends Seeder
 {
@@ -12,7 +13,9 @@ class ResourceSeeder extends Seeder
      */
     public function run(): void
     {
-        $tables = collect(DB::select('SHOW TABLES'))
+        $tables = Schema::getTables();
+
+        $tables = collect(Schema::getTables())
             ->map(function ($table) {
                 return array_values((array) $table)[0];
             })

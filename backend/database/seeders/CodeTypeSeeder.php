@@ -17,12 +17,12 @@ class CodeTypeSeeder extends Seeder
             $data = [
                 [
                     'id' => 1,
-                    'code_type_name' => 'Player',
+                    'code_type_name' => 'Player Code',
                 ],
                 
                 [
                     'id' => 2,
-                    'code_type_name' => 'Provider',
+                    'code_type_name' => 'Provider Code',
                 ],
 
             ];

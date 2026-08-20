@@ -6,7 +6,8 @@ RUN apt-get update && apt-get install -y \
     git \
     unzip \
     libzip-dev \
-    && docker-php-ext-install pdo_mysql zip
+    libpq-dev \
+    && docker-php-ext-install pdo_pgsql zip
 
 # Enable Laravel URL rewriting
 RUN a2enmod rewrite
